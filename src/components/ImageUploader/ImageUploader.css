@@ -1,0 +1,15 @@
+.upload-area {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.6rem;
+	
+	.submit {
+	  margin-left: 0.3rem;
+	  background-color: darkgreen;
+	  padding: 0.3em 1.0em;
+	}
+	
+	#result {
+		margin-left: 0.3rem;
+	}
+}

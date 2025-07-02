@@ -1,0 +1,20 @@
+.image-area {
+	display: flex;
+	justify-content: center;
+	
+	.image-panel {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		margin-left: 0.3rem;
+		
+		.display-image {
+			max-width: 150px;
+			max-height: 150px;
+		}
+		
+		.submit {
+			background-color: maroon;
+		}
+	}
+}

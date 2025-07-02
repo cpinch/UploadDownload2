@@ -1,0 +1,12 @@
+.grid-configurer {
+	margin-bottom: 0.3rem;
+	
+	#grid-enabled {
+		margin-left: 0.6rem;
+	}
+	
+	.configure-button {
+	margin-left: 0.6rem;
+		background-color: dimgray;
+	}
+}

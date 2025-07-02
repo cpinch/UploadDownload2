@@ -1,0 +1,21 @@
+.maps-filter {
+	display: flex;
+	padding: 0 0.3rem 0.3rem;
+	margin-bottom: 0.3rem;
+	border-bottom: solid;
+	
+	#name-input {
+		flex-grow: 1;
+		margin-left: 0.3rem;
+		margin-right: 0.3rem;
+	}
+	
+	> div {
+		flex-grow: 1;
+		margin-left: 0.3rem;
+	}
+	
+	.option {
+		background-color: black;
+	}
+}
