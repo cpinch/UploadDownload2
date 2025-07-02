@@ -1,16 +1,16 @@
 import { serverURL } from './ServerURL.ts'
 
 class GridService {
-	static getGridState(): Promise<{enabled: boolean, color: string, hex: boolean, hexV: boolean}> {
+	static getGridState(): Promise<{enabled: boolean, color: string, gridSize: number, hex: boolean, hexV: boolean, hexSize: number}> {
 		return fetch(serverURL+"/grid")
 			.then((response) => response.json())
 			.catch(() => {
 			  console.error("Failed to load grid state")
-			  return {enabled: false, color: "#000000", hex: false, hexV: false}			  
+			  return {enabled: false, color: "#000000", gridSize: 50, hex: false, hexV: false, hexSize: 50}			  
 			})
 	}
 	
-	static updateGridState(data: {enabled?: boolean, color?: string, hex?: boolean, hexV?: boolean}): Promise<boolean> {
+	static updateGridState(data: {enabled?: boolean, color?: string, gridSize?: number, hex?: boolean, hexV?: boolean, hexSize?: number}): Promise<boolean> {
 		return fetch(serverURL+"/grid", {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},

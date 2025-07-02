@@ -5,11 +5,16 @@ import CloseButton from '../CloseButton/CloseButton.tsx'
 import GridService from '../../services/GridService.tsx'
 import { useOutsideAlerter } from '../../hooks/OutsideAlerter.tsx'
 
+// TODO - Allow changing grid size?
 function GridConfigurationWindow(props: { closeCallback: Function }) {
 	// Color is managed internally by the colorpicker because we can't use the standard react tools for it
 	// See the comment in useEffect for more information on this
+	const [gSize, setGSize] = useState<number>(50)
+	const [dGSize, setDGSize] = useState<number>(50)
 	const [hex, setHex] = useState<boolean>(false)
 	const [hexV, setHexV] = useState<boolean>(true)
+	const [hSize, setHSize] = useState<number>(50)
+	const [dHSize, setDHSize] = useState<number>(50)
 
 	const thisRef = useRef<HTMLDivElement>(null)
 	useOutsideAlerter(thisRef, props.closeCallback)
@@ -21,10 +26,14 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 		}
 	}
 	
-	function setInitialGridState(json: {color: string, hex: boolean, hexV: boolean}): void {
+	function setInitialGridState(json: {gridSize: number, color: string, hex: boolean, hexV: boolean, hexSize: number}): void {
+		setGSize(json.gridSize)
+		setDGSize(json.gridSize)
 		setHex(json.hex)
 		setHexV(json.hexV)
 		setDisplayColor(json.color)
+		setHSize(json.hexSize)
+		setDHSize(json.hexSize)
 	}
 	
 	let evAdded = false
@@ -79,6 +88,28 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 			})
 	}
 	
+	function setGridSize(): void {
+		GridService.updateGridState({"gridSize": dGSize})
+			.then((success) => {
+				if (success) {
+					setGSize(dGSize)
+				} else {
+					setDGSize(gSize)
+				}
+			})
+	}
+
+	function setHexSize(): void {
+		GridService.updateGridState({"hexSize": dHSize})
+			.then((success) => {
+				if (success) {
+					setHSize(dHSize)
+				} else {
+					setDHSize(hSize)
+				}
+			})
+	}
+	
 	return (
 	    <div className="grid-window" ref={thisRef}>
 			<h3>Grid Configuration Options:</h3>
@@ -94,11 +125,19 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 					<label htmlFor="grid-hex">Hex</label>
 					<input type="radio" id="grid-hex" name="grid-type" value="" onChange={() => setGridHex(true) } checked={hex} />
 				</span>
+				{ !hex && <span>
+					<label htmlFor="grid-size">Grid Size</label>
+					<input type="range" min="10" max="150" value={dGSize} className="slider" id="grid-size" onChange={(e) => setDGSize(Number(e.target.value))} onMouseUp={setGridSize} />
+				</span>}
 				{ hex && <span>
 					<label htmlFor="hex-cent">Center Hexes</label>
 					<input type="radio" id="hex-cent" name="hex-vert" value="" onChange={() => setGridHexV(true) } checked={hexV} />
 					<label htmlFor="hex-edge">Left Align Hexes</label>
 					<input type="radio" id="hex-edge" name="hex-vert" value="" onChange={() => setGridHexV(false) } checked={!hexV} />
+				</span>}
+				{ hex && <span>
+					<label htmlFor="hex-size">Hex Size</label>
+					<input type="range" min="10" max="150" value={dHSize} className="slider" id="hex-size" onChange={(e) => setDHSize(Number(e.target.value))} onMouseUp={setHexSize} />
 				</span>}
 			</div>
 		</div>

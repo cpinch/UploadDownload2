@@ -33,53 +33,12 @@ describe('Map Panel tests', () => {
 		
 		await screen.findByRole("img")
 		await userEvent.click(screen.getByRole("img"))
-		await screen.findAllByRole("textbox")
+		await screen.findByText("Zoomed Map Panel")
 
-		const zoomedImg = screen.getByRole("img")
-		expect(zoomedImg).toBeInTheDocument()
-		expect(zoomedImg.src).toBe("http://localhost/url")
-		const inputs = screen.getAllByRole("textbox")
-		expect(inputs.length).toBe(2)
-		expect(inputs[0]).toBeInTheDocument()
-		expect(inputs[0].id).toBe("filename-input")
-		expect(inputs[1]).toBeInTheDocument()
-		expect(inputs[1].id).toBe("tags-input")
-		const closeButton = screen.getByText("Close Button")
-		expect(closeButton).toBeInTheDocument()
-	})
-
-	it('calls update filename when enter is pressed on the filename fied', async () => {
-		const spy = jest.spyOn(ImageService, 'updateFilename').mockImplementation((oldFn, newFn) => Promise.resolve(true))		
-		render(<ExistingMapPanel url="url" filename="filename.txt" tags="" />)
-	
-		await screen.findByRole("img")
-		await userEvent.click(screen.getByRole("img"))
-		await screen.findAllByRole("textbox")
-		const fnTextbox = screen.getAllByRole("textbox")[0]
-		await userEvent.clear(fnTextbox)
-		await userEvent.type(fnTextbox, "new filename")
-		await userEvent.type(fnTextbox, '{enter}')
-
-		expect(spy).toHaveBeenCalledTimes(1)
-		expect(spy).toHaveBeenCalledWith("filename.txt", "new filename.txt")
-	})
-
-	it('calls update filtagsename when enter is pressed on the tags fied', async () => {
-		const spy = jest.spyOn(ImageService, 'updateTags').mockImplementation((filename, tags) => Promise.resolve(true))		
-		render(<ExistingMapPanel url="url" filename="filename" tags="" />)
-
-		await screen.findByRole("img")
-		await userEvent.click(screen.getByRole("img"))
-		await screen.findAllByRole("textbox")
-		const tagsTextbox = screen.getAllByRole("textbox")[1]
-		await userEvent.type(tagsTextbox, "tag1, tag2, tag3")
-		await userEvent.type(tagsTextbox, '{enter}')
-
-		expect(spy).toHaveBeenCalledTimes(1)
-		expect(spy).toHaveBeenCalledWith("filename", "tag1, tag2, tag3")
+		const zoomPanel = screen.getByText("Zoomed Map Panel")
+		expect(zoomPanel).toBeInTheDocument()
 	})
 })
 
-jest.mock('../CloseButton/CloseButton', () => { return { 'default': () => <p>Close Button</p>}})
-jest.mock('../../hooks/OutsideAlerter.tsx')
+jest.mock('../ZoomedMapPanel/ZoomedMapPanel', () => { return { 'default': () => <p>Zoomed Map Panel</p>}})
 jest.mock('../../services/ServerURL', () => { serverURL: "" })

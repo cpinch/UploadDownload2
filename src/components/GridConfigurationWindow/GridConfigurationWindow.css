@@ -17,6 +17,10 @@
 		margin: 5px 0;
 	}
 	
+	.slider {
+		margin-left: 0.3rem;
+	}
+	
 	#grid-color {
 		margin-left:0.3rem;
 		width: 20px;

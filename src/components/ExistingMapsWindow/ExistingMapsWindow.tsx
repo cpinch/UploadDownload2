@@ -55,7 +55,15 @@ function ExistingMapsWindow(props: {closeCallback: Function, updateCallback: Fun
 			{loading && <Spinner />}
 			{ displayImgs && 
 				<div className="panels-area">
-					{ displayImgs.map((img, index) => <ExistingMapPanel key={index} url={img.url} filename={img.filename} tags={img.tags} closeCallback={props.closeCallback} updateCallback={props.updateCallback} />) }
+					{ displayImgs.map((img, index) => <ExistingMapPanel 
+															key={index} 
+															url={img.url} 
+															filename={img.filename} 
+															tags={img.tags} 
+															closeCallback={props.closeCallback} 
+															updateCallback={props.updateCallback} 
+															reloadTagsCallback={loadTags}
+														/>) }
 				</div>	
 			}
 		</div>

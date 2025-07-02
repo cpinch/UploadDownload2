@@ -13,39 +13,4 @@
 		max-height: 130px;
 		object-fit: contain;		
 	}
-	
-	.zoomed-header {
-		display: flex;
-		justify-content: space-between;
-		
-		.filename {
-			flex-grow: 10;
-		}
-	}
-
-	.zoomed-footer {
-		display: flex;
-		justify-content: space-between;
-		
-		.tags {
-			margin-left: 0.3rem;
-			flex-grow: 10;
-		}
-	}
-	
-	.zoomed-map {
-		position: fixed;
-		display: flex;
-		flex-direction: column;
-		background-color: black;
-		top: 15%;
-		left: 50%;
-		transform: translate(-50%, 0);
-		
-		> img {
-			max-width: 500px;
-			max-height: 400px;
-			object-fit: contain;
-		}
-	}
 }
