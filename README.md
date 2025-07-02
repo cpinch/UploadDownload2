@@ -1,4 +1,4 @@
-"#UploadDownload2" 
+#UploadDownload2
 
 A basic frontend for managing the state of the GMTools display screen on the local machine.
 
