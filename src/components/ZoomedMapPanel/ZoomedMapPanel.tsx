@@ -5,13 +5,14 @@ import ImageService from '../../services/ImageService.tsx'
 import { useOutsideAlerter } from '../../hooks/OutsideAlerter.tsx'
 import CloseButton from '../CloseButton/CloseButton.tsx'
 
-function ZoomedMapPanel(props: {url: string, filename: string, tags: string, updateFilenameCallback: Function, updateTagsCallback: Function, zoomOutCallback: Function}) {
+function ZoomedMapPanel(props: {url: string, filename: string, tags: string, updateFilenameCallback: (filename: string) => void, 
+				updateTagsCallback: (tags: string) => void, zoomOutCallback: () => void}) {
 	const [displayFn, setDisplayFn] = useState<string>(props.filename.split('.').slice(0, -1).join('.'))
 	const ext = '.' + props.filename.split('.').pop()
 	const [displayTags, setDisplayTags] = useState<string>(props.tags)
 	
 	const thisRef = useRef<HTMLDivElement>(null)
-	useOutsideAlerter(thisRef, () => props.zoomOutCallback(false))
+	useOutsideAlerter(thisRef, () => props.zoomOutCallback())
 	
 	function updateFilename(newFn: string): void {
 		const cleanNewFn = newFn.replace(/[^a-zA-Z0-9 ,'-_]/g, "")
@@ -38,14 +39,22 @@ function ZoomedMapPanel(props: {url: string, filename: string, tags: string, upd
 	
 	function sendTagsUpdate(event: React.KeyboardEvent<HTMLInputElement>): void {
 		if (event.key === 'Enter' && props.tags != displayTags) {
-			ImageService.updateTags(props.filename, displayTags)
-				.then((success) => {
-					if (success) {
-						props.updateTagsCallback(displayTags)
-					} else {
-						setDisplayTags(props.tags)
-					}
-				})
+			// Removes the reserved tag "none" from the list and changes any sequence of multiple commas 
+			//	with nothing but whitespace between them into a single comma
+			const cleanTags = displayTags.replace("none", "").replace(/,\s*,/g, ",")
+			if (cleanTags === "," || props.tags === cleanTags) {
+				setDisplayTags("")
+			} else {
+				ImageService.updateTags(props.filename, cleanTags)
+					.then((success) => {
+						if (success) {
+							setDisplayTags(cleanTags)
+							props.updateTagsCallback(cleanTags)
+						} else {
+							setDisplayTags(props.tags)
+						}
+					})
+			}
 		}		
 	}
 	

@@ -10,6 +10,10 @@
 		margin-right: 0.3rem;
 	}
 	
+	.chip {
+		font-size: 100%;
+	}
+		
 	> div {
 		flex-grow: 1;
 		margin-left: 0.3rem;

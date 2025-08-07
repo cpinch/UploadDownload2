@@ -1,10 +1,10 @@
-.grid-configurer {
+.fog-configurer {
 	margin-bottom: 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: baseline;
 	
-	#grid-enabled {
+	#fog-enabled {
 		margin-left: 1rem;
 		transform: scale(2);
 	}

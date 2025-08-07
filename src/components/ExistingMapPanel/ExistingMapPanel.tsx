@@ -4,11 +4,11 @@ import "./ExistingMapPanel.css"
 import ImageService from '../../services/ImageService.tsx'
 import ZoomedMapPanel from '../ZoomedMapPanel/ZoomedMapPanel.tsx'
 
-function ExistingMapPanel(props: {url: string, filename: string, tags: string, closeCallback: Function, updateCallback: Function, reloadTagsCallback: Function}) {
+function ExistingMapPanel(props: {url: string, filename: string, tags: string, 
+							closeCallback: () => void, updateCallback: () => void, reloadTagsCallback: () => void}) {
 	const [zoomed, setZoomed] = useState<boolean>(false)
 	const [filename, setFilename] = useState<string>(props.filename)
 	const [tags, setTags] = useState<string>(props.tags)
-	
 	
 	function copyToProjector(filename: string): void {
 		ImageService.copyToProjector(filename)
@@ -17,7 +17,7 @@ function ExistingMapPanel(props: {url: string, filename: string, tags: string, c
 	}
 		
 	return (
-		<div className="map-panel">
+		<div id={filename} className="map-panel">
 			<img onClick={() => setZoomed(true)} src={props.url} />
 			<button type="submit" onClick={() => copyToProjector(filename)}>Copy to Projector</button>
 			{ zoomed && <ZoomedMapPanel 

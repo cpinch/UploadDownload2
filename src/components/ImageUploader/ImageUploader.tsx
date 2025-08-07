@@ -3,16 +3,16 @@ import "./ImageUploader.css"
 
 import ImageService from '../../services/ImageService.tsx'
 
-function ImageUploader(props: {folder: string, updateCallback: Function}) {
+function ImageUploader(props: {folder: string, updateCallback: () => void}) {
 	const [file, setFile] = useState<File | null>(null)
 	const [status, setStatus] = useState<string>('initial')
 	const fileInput = useRef<HTMLInputElement>(null)
 
 	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-	  if (e.target.files) {
-	    setStatus('initial')
-	    setFile(e.target.files[0])
-	  }
+		if (e.target.files) {
+			setStatus('initial')
+			setFile(e.target.files[0])
+		}
 	}
 	
 	function reset() {
@@ -22,33 +22,33 @@ function ImageUploader(props: {folder: string, updateCallback: Function}) {
 		}
 	}
 
-	async function handleUpload() {
-	  if (file) {
-	    setStatus('uploading')		
-		ImageService.uploadImage(props.folder, file)
-			.then((result) => {
-				if (result?.status === 200) {
-					setStatus('success')
-					props.updateCallback()
-					reset()		
-					setTimeout(() => setStatus('initial'), 2000)
-				} else if (result?.status === 400) {
-					setStatus('invalid')					
-				} else {
-					setStatus('fail')
-				}
+	function handleUpload() {
+		if (file) {
+			setStatus('uploading')
+			ImageService.uploadImage(props.folder, file)
+				.then((result) => {
+					if (result?.status === 200) {
+						setStatus('success')
+						props.updateCallback()
+						reset()		
+						setTimeout(() => setStatus('initial'), 2000)
+					} else if (result?.status === 400) {
+						setStatus('invalid')					
+					} else {
+						setStatus('fail')
+					}
 			})
-	  }
+		}
 	}
 	
 	return (
-	  <>
-	    <div className="upload-area">
-	      <input id="file" type="file" role="input" onChange={handleFileChange} accept="image/*" ref={fileInput} />
-	      { file && <button onClick={handleUpload} className="submit">Upload</button> }
-		  <Result status={status} />
-		</div>
-	  </>
+		<>
+			<div className="upload-area">
+				<input id="file" type="file" role="input" onChange={handleFileChange} accept="image/*" ref={fileInput} />
+				{ file && <button onClick={handleUpload} className="submit">Upload</button> }
+				<Result status={status} />
+			</div>
+		</>
 	)
 }
 

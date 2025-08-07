@@ -17,7 +17,7 @@ describe('Grid Configuration Window tests', () => {
 		
 	    const heading = screen.getByRole("heading")
 	    expect(heading).toBeInTheDocument()
-		expect(heading.innerHTML).toEqual("Grid Configuration Options:")
+		expect(heading.innerHTML).toEqual("Grid Configuration Options")
 		const closeButton = screen.getByRole("button")
 		expect(closeButton).toBeInTheDocument()
 		const colorPicker = screen.getByLabelText("Color")

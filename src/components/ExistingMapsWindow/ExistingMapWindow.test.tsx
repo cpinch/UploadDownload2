@@ -104,6 +104,38 @@ describe('Existing Map Window tests', () => {
 		expect(screen.getByText("img4")).toBeInTheDocument()
 		expect(screen.queryByText("img5")).not.toBeInTheDocument()		
 	})
+
+	it('filters to untagged maps when tag "none" is selected', async () => {
+		const spy = jest.spyOn(ImageService, 'loadImagesFromFolder').mockImplementation((folder) => Promise.resolve(() => [
+			{url: "img1", filename: "filename1", tags: ["tag1", "tag3"]},
+			{url: "img2", filename: "filen2", tags: ["tag2"]},
+			{url: "img3", filename: "fname3", tags: []},
+			{url: "img4", filename: "filename100", tags: ["tag1", "tag2", "tag3"]},
+			{url: "img5", filename: "fn5", tags: ["tag3"]},
+		]))
+		const spy2 = jest.spyOn(ImageService, 'loadUniqueMapTags').mockImplementation((folder) => Promise.resolve(() => ["tag1", "tag2", "tag3"]))
+
+		filterTags = ["none"]
+		render(<ExistingMapsWindow />)
+		
+		await screen.findByText("img1")
+		
+		// All should be visibile initially
+		expect(screen.getByText("img1")).toBeInTheDocument()
+		expect(screen.getByText("img2")).toBeInTheDocument()
+		expect(screen.getByText("img3")).toBeInTheDocument()
+		expect(screen.getByText("img4")).toBeInTheDocument()
+		expect(screen.getByText("img5")).toBeInTheDocument()
+		
+		await userEvent.click(screen.getByText("File Filter"))
+		await screen.findByText("img3")
+
+		expect(screen.queryByText("img1")).not.toBeInTheDocument()
+		expect(screen.queryByText("img2")).not.toBeInTheDocument()
+		expect(screen.getByText("img3")).toBeInTheDocument()
+		expect(screen.queryByText("img4")).not.toBeInTheDocument()
+		expect(screen.queryByText("img5")).not.toBeInTheDocument()		
+	})
 })
 
 jest.mock('../ImageUploader/ImageUploader', () => { return { 'default': () => <p>Image Uploader</p>}})

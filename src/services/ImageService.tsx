@@ -5,8 +5,8 @@ class ImageService {
 		return fetch(serverURL+"/getImages"+folder)
 			.then((response) => response.json())
 			.catch(() => {
-			  console.error("Failed to load images from "+folder);
-			  return Promise.resolve([])
+				console.error("Failed to load images from "+folder);
+				return Promise.resolve([])
 			})
 	}
 	
@@ -16,31 +16,31 @@ class ImageService {
 
 		return fetch(serverURL+"/upload"+folder, {method: 'POST', body: formData})
 			.catch(() => {
-			  console.error("Error while uploading file to server");
+				console.error("Error while uploading file to server");
 			})
 	}
 	
 	static copyToProjector(filename: string): Promise<void | Response> {
 		return fetch(serverURL+"/copyToProjector/"+filename, {method: 'POST'})
 			.catch(() => {
-			  console.error("Failed to copy image to projector")
-			  return Promise.resolve()
+				console.error("Failed to copy image to projector")
+				return Promise.resolve()
 			})
 	}
 	
 	static deleteImage(folder: string, filename: string): Promise<void | Response> {
 		return fetch(serverURL+"/delete"+folder + "/"+filename, {method: 'POST'})
 			.catch(() => {
-			  console.error("Failed to delete image "+filename+" from "+folder)
-			  return Promise.resolve()
+				console.error("Failed to delete image "+filename+" from "+folder)
+				return Promise.resolve()
 			})
 	}
 	
 	static clearFolder(folder: string): Promise<void | Response> {
 		return fetch(serverURL+"/clear"+folder, {method: 'POST'})
 			.catch(() => {
-			  console.error("Failed to clear folder "+folder);
-			  return Promise.resolve()
+				console.error("Failed to clear folder "+folder)
+				return Promise.resolve()
 			})
 	}
 	
@@ -55,8 +55,8 @@ class ImageService {
 				}
 			})
 			.catch(() => {
-			  console.error("Failed to update map filename from "+oldFn+" to "+newFn)
-			  return Promise.resolve(false)
+				console.error("Failed to update map filename from "+oldFn+" to "+newFn)
+				return Promise.resolve(false)
 			})
 	}
 
@@ -80,8 +80,8 @@ class ImageService {
 		return fetch(serverURL+"/uniqueTags")
 			.then((response) => response.json())
 			.catch(() => {
-			  console.error("Failed to load map tags list");
-			  return []
+				console.error("Failed to load map tags list");
+				return Promise.resolve([])
 			})
 	}
 }

@@ -1,0 +1,16 @@
+.fog-window {	
+	position: fixed;
+	border: solid;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #161616;
+	padding: 0 0 1rem 1rem;
+	z-index: 10;
+	
+	> h2 {
+		padding-top: 0;
+		margin-top: 0;
+		margin-right: 70px;
+	}
+}

@@ -27,7 +27,7 @@ function GridConfigurer() {
 	}
 	
 	return (
-	    <div className="grid-configurer">Show Grid? 
+		<div className="grid-configurer">Show Grid? 
 			<input type="checkbox" id="grid-enabled" value="" onChange={() => setGridEnabled(!enabled)} checked={enabled} />
 			<button className="configure-button" onClick={() => setDisplay(true)}>Configure</button>
 			{ display && <GridConfigurationWindow closeCallback={() => setDisplay(false)} /> }

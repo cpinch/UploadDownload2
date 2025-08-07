@@ -5,8 +5,7 @@ import CloseButton from '../CloseButton/CloseButton.tsx'
 import GridService from '../../services/GridService.tsx'
 import { useOutsideAlerter } from '../../hooks/OutsideAlerter.tsx'
 
-// TODO - Allow changing grid size?
-function GridConfigurationWindow(props: { closeCallback: Function }) {
+function GridConfigurationWindow(props: { closeCallback: () => void }) {
 	// Color is managed internally by the colorpicker because we can't use the standard react tools for it
 	// See the comment in useEffect for more information on this
 	const [gSize, setGSize] = useState<number>(50)
@@ -20,7 +19,7 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 	useOutsideAlerter(thisRef, props.closeCallback)
 	
 	function setDisplayColor(color: string): void {
-		let el = document.getElementById('grid-color')
+		const el = document.getElementById('grid-color')
 		if (el) {
 			(el as HTMLInputElement).value = color
 		}
@@ -36,6 +35,7 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 		setDHSize(json.hexSize)
 	}
 	
+	// This is purely to avoid double adding the event listener during dev testing
 	let evAdded = false
 	
 	useEffect(() => {
@@ -53,7 +53,7 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 		// (the alternative would be finding and using a full react colorpicker component with more options, but for a single
 		//   minor function like this that feels like massive overkill)
 		if (!evAdded) {
-			let el = document.getElementById('grid-color')
+			const el = document.getElementById('grid-color')
 			if (el) {
 				el.addEventListener('change', (e) => setGridColor((e.target as HTMLInputElement).value))
 				evAdded = true
@@ -111,8 +111,8 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 	}
 	
 	return (
-	    <div className="grid-window" ref={thisRef}>
-			<h3>Grid Configuration Options:</h3>
+		<div className="grid-window" ref={thisRef}>
+			<h2>Grid Configuration Options</h2>
 			<CloseButton closeCallback={props.closeCallback} />
 			<div className="grid-options">
 				<span>
@@ -141,7 +141,7 @@ function GridConfigurationWindow(props: { closeCallback: Function }) {
 				</span>}
 			</div>
 		</div>
-	);
+	)
 }
 
 export default GridConfigurationWindow

@@ -3,7 +3,7 @@ import "./ExistingMapButton.css"
 
 import ExistingMapsWindow from '../ExistingMapsWindow/ExistingMapsWindow.tsx'
 
-function ExistingMapButton(props: {updateCallback: Function}) {
+function ExistingMapButton(props: {updateCallback: () => void}) {
 	const [displayed, setDisplayed] = useState<boolean>(false)
 	
 	return (

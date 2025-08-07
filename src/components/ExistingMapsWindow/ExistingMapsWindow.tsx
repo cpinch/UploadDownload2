@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import "./ExistingMapsWindow.css"
 
 import ImageUploader from '../ImageUploader/ImageUploader.tsx'
@@ -7,12 +7,16 @@ import Spinner from '../Spinner/Spinner.tsx'
 import CloseButton from '../CloseButton/CloseButton.tsx'
 import FileFilter from '../FileFilter/FileFilter.tsx'
 import ImageService from '../../services/ImageService.tsx'
+import { useOutsideAlerter } from '../../hooks/OutsideAlerter.tsx'
 
-function ExistingMapsWindow(props: {closeCallback: Function, updateCallback: Function}) {
+function ExistingMapsWindow(props: {closeCallback: () => void, updateCallback: () => void}) {
 	const [imgs, setImgs] = useState<{url: string, filename: string, tags: string}[] | null>(null)
 	const [displayImgs, setDisplayImgs] = useState<{url: string, filename: string, tags: string}[] | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
 	const [tags, setTags] = useState<string[]>([])
+
+	const thisRef = useRef<HTMLDivElement>(null)
+	useOutsideAlerter(thisRef, props.closeCallback)
 	
 	useEffect(() => {
 		loadMaps()
@@ -36,27 +40,33 @@ function ExistingMapsWindow(props: {closeCallback: Function, updateCallback: Fun
 			.then((response: string[]) => setTags(response))
 	}
 	
-	function filterMaps(filterFn: String, filterTags: string[]): void {
+	function filterMaps(filterFn: string, filterTags: string[]): void {
 		if (imgs) {
-			setDisplayImgs(imgs
-				.filter((img) => img.filename.toLowerCase().includes(filterFn.toLowerCase()))
-				.filter((img) => filterTags.every((tag) => img.tags.includes(tag))))
+			if (filterTags.length === 1 && filterTags[0] === "none") {
+				setDisplayImgs(imgs
+					.filter((img) => img.filename.toLowerCase().includes(filterFn.toLowerCase()))
+					.filter((img) => img.tags.length === 0))
+			} else {
+				setDisplayImgs(imgs
+					.filter((img) => img.filename.toLowerCase().includes(filterFn.toLowerCase()))
+					.filter((img) => filterTags.every((tag) => img.tags.includes(tag))))
+			}
 		}		
 	}
 		
 	return (
-		<div className="map-window">
+		<div className="map-window" ref={thisRef}>
 			<CloseButton closeCallback={props.closeCallback} />
 			<div className="window-header">
 				<h2 className="window-title">Available Maps</h2>
 				<ImageUploader folder="/maps" updateCallback={() => loadMaps()} />
 			</div>
-			<FileFilter tags={tags} updateCallback={filterMaps} />
+			<FileFilter tags={[...tags, "none"]} updateCallback={filterMaps} />
 			{loading && <Spinner />}
 			{ displayImgs && 
 				<div className="panels-area">
-					{ displayImgs.map((img, index) => <ExistingMapPanel 
-															key={index} 
+					{ displayImgs.map((img) => <ExistingMapPanel 
+															key={img.url} 
 															url={img.url} 
 															filename={img.filename} 
 															tags={img.tags} 

@@ -5,8 +5,8 @@ class GridService {
 		return fetch(serverURL+"/grid")
 			.then((response) => response.json())
 			.catch(() => {
-			  console.error("Failed to load grid state")
-			  return {enabled: false, color: "#000000", gridSize: 50, hex: false, hexV: false, hexSize: 50}			  
+				console.error("Failed to load grid state")
+				return {enabled: false, color: "#000000", gridSize: 50, hex: false, hexV: false, hexSize: 50}			  
 			})
 	}
 	

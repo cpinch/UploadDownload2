@@ -2,9 +2,10 @@ import { useState } from 'react'
 import Multiselect from 'multiselect-react-dropdown'
 import "./FileFilter.css"
 
-function FileFilter(props: { tags: String[], updateCallback: Function}) {
+function FileFilter(props: { tags: string[], updateCallback: (filterFn: string, filterTags: string[]) => void}) {
 	const [filterFn, setFilterFn] = useState<string>("")
 	const [filterTags, setFilterTags] = useState<string[]>([])
+	const [selectionLimit, setSelectionLimit] = useState<number>(-1)
 	
 	function updateFilterFn(fn: string): void {
 		setFilterFn(fn)
@@ -15,12 +16,20 @@ function FileFilter(props: { tags: String[], updateCallback: Function}) {
 		const ft = [...filterTags, tag]
 		setFilterTags(ft)
 		props.updateCallback(filterFn, ft)
+		
+		if (tag === "none") {
+			setSelectionLimit(1)
+		}
 	}
 
 	function removeFilterTag(tag: string): void {
 		const ft = filterTags.filter((t) => t != tag)
 		setFilterTags(ft)
 		props.updateCallback(filterFn, ft)
+		
+		if (tag === "none") {
+			setSelectionLimit(-1)
+		}
 	}
 	
 	return (
@@ -31,8 +40,9 @@ function FileFilter(props: { tags: String[], updateCallback: Function}) {
 			<Multiselect id="tag-dropdown"
 				isObject={false}
 				options={props.tags}
-				onSelect={(selectedItem) => addFilterTag(selectedItem)}
-				onRemove={(removedItem) => removeFilterTag(removedItem)}
+				onSelect={(_selectedList, selectedItem: string) => addFilterTag(selectedItem)}
+				onRemove={(_selectedList, removedItem: string) => removeFilterTag(removedItem)}
+				selectionLimit={selectionLimit}
 			/>
 		</div>
 	)

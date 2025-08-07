@@ -3,7 +3,8 @@ import "./ImageDisplayer.css"
 import Spinner from '../Spinner/Spinner.tsx'
 import ImageService from '../../services/ImageService.tsx'
 
-function ImageDisplayer(props: {folder: string, loading: boolean, imgs: {url: string, filename: string}[], updateCallback: Function}) {	
+function ImageDisplayer(props: {folder: string, loading: boolean, imgs: {url: string, filename: string}[], 
+								updateCallback: () => void}) {	
 	function deleteImage(filename: string) {
 		ImageService.deleteImage(props.folder, filename)
 			.then(() => props.updateCallback())
@@ -19,12 +20,12 @@ function ImageDisplayer(props: {folder: string, loading: boolean, imgs: {url: st
 	}
 	
 	return (
-	  <>
-	    <div className="image-area">
-			{props.loading && <Spinner />}
-			{!props.loading && props.imgs && props.imgs.length > 0 && props.imgs.map((img, index) => getImageComponent(img, index))}
-		</div>
-	  </>
+		<>
+			<div className="image-area">
+				{props.loading && <Spinner />}
+				{!props.loading && props.imgs && props.imgs.length > 0 && props.imgs.map((img, index) => getImageComponent(img, index))}
+			</div>
+		</>
 	)
 }
 

@@ -26,12 +26,12 @@ function ScreenArea() {
 	}
 
 	return (
-	  <div className="screen-area">
-	  	<h2>Screen</h2>
-		<ImageUploader folder="/screen" updateCallback={() => loadFiles()} />
-		<ImageDisplayer folder="/screen" loading={loading} imgs={imgs} updateCallback={() => loadFiles()} />
-		{imgs && imgs.length > 0 && <button onClick={() => clearAll()} className="submit">Clear Screen</button>}
-	  </div>
+		<div className="screen-area">
+			<h2>Screen</h2>
+			<ImageUploader folder="/screen" updateCallback={() => loadFiles()} />
+			<ImageDisplayer folder="/screen" loading={loading} imgs={imgs} updateCallback={() => loadFiles()} />
+			{imgs && imgs.length > 0 && <button onClick={() => clearAll()} className="submit">Clear Screen</button>}
+		</div>
 	)
 }
 

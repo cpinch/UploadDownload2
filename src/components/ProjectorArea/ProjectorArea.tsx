@@ -6,10 +6,13 @@ import ImageDisplayer from '../ImageDisplayer/ImageDisplayer.tsx'
 import ImageService from '../../services/ImageService.tsx'
 import ExistingMapButton from '../ExistingMapButton/ExistingMapButton.tsx'
 import GridConfigurer from '../GridConfigurer/GridConfigurer.tsx'
+import FogConfigurer from '../FogConfigurer/FogConfigurer.tsx'
 
 function ProjectorArea() {
 	const [imgs, setImgs] = useState<{url: string, filename: string}[]>([])
 	const [loading, setLoading] = useState<boolean>(true)
+	
+	const local = false
 	
 	useEffect(() => {
 		loadFiles()
@@ -31,6 +34,7 @@ function ProjectorArea() {
     <div className="projector-area">
 		<h2>Projector</h2>
 		<GridConfigurer />
+		{local && <FogConfigurer />}
 		<ImageUploader folder="/projector" updateCallback={() => loadFiles()} />
 		<ImageDisplayer folder="/projector" loading={loading} imgs={imgs} updateCallback={() => loadFiles()} />
 		<ExistingMapButton updateCallback={() => loadFiles()} />
